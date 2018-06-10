@@ -13,10 +13,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Sitecore.Cintel;
 
-namespace Sitecore.Cintel
+namespace Sitecore.Support.Cintel
 {
   public class ContactSearchProvider : IContactSearchProvider
   {
@@ -57,7 +57,7 @@ namespace Sitecore.Cintel
           {
             Contact current = enumerator.Current;
             EngagementMeasures facet = current.GetFacet<EngagementMeasures>("EngagementMeasures");
-            IpInfo ipInfo = current.Interactions.OfType<IpInfo>().FirstOrDefault<IpInfo>();
+            var ipInfo = current.Interactions.Select(i => i.GetFacet<IpInfo>(IpInfo.DefaultFacetKey)).LastOrDefault(f => f != null);
             PersonalInformation facet2 = current.GetFacet<PersonalInformation>("Personal");
             EmailAddressList facet3 = current.GetFacet<EmailAddressList>("Emails");
             Interaction interaction = current.Interactions.FirstOrDefault<Interaction>();
